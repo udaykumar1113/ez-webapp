@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class EzByteController {
 
-    @RequestMapping("/home")
+    @RequestMapping(value = {"/home","/",""})
     public String displayHomePage(){
         return "home.html";
     }
