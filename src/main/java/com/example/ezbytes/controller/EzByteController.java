@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EzByteController {
 
     @RequestMapping(value={"", "/", "home"})
-    public String displayHomePage(Model model) {
-        model.addAttribute("username", "John Cean");
+    public String displayHomePage() {
         return "home.html";
     }
 }
