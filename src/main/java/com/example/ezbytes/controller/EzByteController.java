@@ -9,7 +9,7 @@ public class EzByteController {
 
     @RequestMapping(value={"", "/", "home"})
     public String displayHomePage(Model model) {
-        model.addAttribute("username", "John Doe");
+        model.addAttribute("username", "John Cean");
         return "home.html";
     }
 }
