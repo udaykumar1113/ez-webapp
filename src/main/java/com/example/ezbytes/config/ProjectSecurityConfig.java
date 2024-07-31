@@ -15,16 +15,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-            http.csrf((csrf) -> csrf.disable())
+            http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg"))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/home","/").permitAll()
-                        .requestMatchers("/dashboard").authenticated()
+                    .requestMatchers("/home","/").permitAll()
+                    .requestMatchers("/dashboard").authenticated()
                     .requestMatchers("/holidays/**").permitAll()
                     .requestMatchers("/contact").permitAll()
                     .requestMatchers("/saveMsg").permitAll()
                     .requestMatchers("/courses").permitAll()
                     .requestMatchers("/about").permitAll()
                     .requestMatchers("/assets/**").permitAll()
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/logout").permitAll()
                 )
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard")
@@ -32,7 +34,7 @@ public class ProjectSecurityConfig {
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
-        return (SecurityFilterChain)http.build();
+        return http.build();
     }
 
     @Bean
