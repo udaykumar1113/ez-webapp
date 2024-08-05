@@ -1,5 +1,6 @@
 package com.example.ezbytes.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,7 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-            http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg"))
+            http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg")
+                                    .ignoringRequestMatchers(PathRequest.toH2Console()))
                 .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/home","/").permitAll()
                     .requestMatchers("/dashboard").authenticated()
@@ -27,6 +29,7 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/assets/**").permitAll()
                     .requestMatchers("/login").permitAll()
                     .requestMatchers("/logout").permitAll()
+                    .requestMatchers(PathRequest.toH2Console()).permitAll()
                 )
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard")
@@ -34,6 +37,10 @@ public class ProjectSecurityConfig {
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
+
+        http.headers(headersConfigurer -> headersConfigurer
+                .frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
+
         return http.build();
     }
 
