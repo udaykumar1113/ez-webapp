@@ -1,6 +1,7 @@
 package com.example.ezbytes.repository;
 
 import com.example.ezbytes.model.Contact;
+import com.example.ezbytes.rowmappers.ContactRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -33,6 +34,15 @@ public class ContactRepository {
         return jdbcTemplate.update(sql,contact.getName(),contact.getMobileNum(),
                 contact.getEmail(),contact.getSubject(),contact.getMessage(),
                 contact.getStatus(),contact.getCreatedAt(),contact.getCreatedBy());
+    }
+
+    public List<Contact> findMsgsWithStatus(String status) {
+        String sql = "SELECT * FROM CONTACT_MSG WHERE STATUS = ?";
+        return jdbcTemplate.query(sql,new PreparedStatementSetter() {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, status);
+            }
+        },new ContactRowMapper());
     }
 
 }

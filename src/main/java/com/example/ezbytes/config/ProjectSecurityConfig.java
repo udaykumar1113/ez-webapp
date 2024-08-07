@@ -21,6 +21,7 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/home","/").permitAll()
                     .requestMatchers("/dashboard").authenticated()
+                    .requestMatchers("/displayMessages").hasRole("ADMIN")
                     .requestMatchers("/holidays/**").permitAll()
                     .requestMatchers("/contact").permitAll()
                     .requestMatchers("/saveMsg").permitAll()
@@ -54,7 +55,7 @@ public class ProjectSecurityConfig {
         UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("54321")
-                .roles("USER", "ADMIN")
+                .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }

@@ -14,6 +14,7 @@ This makes our code short and clean.
 @Data
 public class Contact extends BaseEntity{
 
+    private int contactId;
     /*
     * @NotNull: Checks if a given field is not null but allows empty values & zero elements inside collections.
       @NotEmpty: Checks if a given field is not null and its size/length is greater than zero.
